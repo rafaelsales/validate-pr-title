@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Check PR title format
       run: |
-        if ! [[ ${{ github.event.pull_request.title }} =~ $PR_TITLE_PATTERN ]]; then
+        if ! [[ "${{ github.event.pull_request.title }}" =~ $PR_TITLE_PATTERN ]]; then
           echo "ERROR: Pull request title does not match required format."
           exit 1
         fi
