@@ -5,7 +5,7 @@ on:
     types: [opened, edited, reopened]
 
 env:
-  PR_TITLE_PATTERN: "^\[[A-Z]+-\d+\] \S+\s+\S+"
+  PR_TITLE_PATTERN: "^\\[[A-Z]+-\\d+\\] \\S+\\s+\\S+"
 
 jobs:
   pr-title-check:
