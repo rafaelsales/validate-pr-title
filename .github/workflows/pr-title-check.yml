@@ -13,11 +13,10 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Please fix the PR title to match this format: [ONB-314] Add password reset flow'
+              body: 'Please fix the PR title to match this format: `[ONB-314] Add password reset flow`'
             })
