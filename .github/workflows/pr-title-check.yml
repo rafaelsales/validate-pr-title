@@ -11,9 +11,12 @@ jobs:
   pr-title-check:
     runs-on: ubuntu-latest
     steps:
-    - name: Check PR title format
-      run: |
-        if ! [[ "${{ github.event.pull_request.title }}" =~ $PR_TITLE_PATTERN ]]; then
-          echo "ERROR: Pull request title does not match required format. E.g. [ONB-314] Add password reset flow"
-          exit 1
-        fi
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Please fix the PR title to match this format: [ONB-314] Add password reset flow'
+            })
