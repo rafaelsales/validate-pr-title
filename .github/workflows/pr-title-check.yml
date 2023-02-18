@@ -5,7 +5,7 @@ on:
     types: [opened, edited, reopened]
 
 env:
-  PR_TITLE_PATTERN: "^\\[[A-Z]+-\\d+\\] \\S+\\s+\\S+"
+  PR_TITLE_PATTERN: "^\\[[A-Z]+-[0-9]+\\] [^ ]+"
 
 jobs:
   pr-title-check:
@@ -14,6 +14,6 @@ jobs:
     - name: Check PR title format
       run: |
         if ! [[ "${{ github.event.pull_request.title }}" =~ $PR_TITLE_PATTERN ]]; then
-          echo "ERROR: Pull request title does not match required format. E.g. [ADMIN-1234] Do something"
+          echo "ERROR: Pull request title does not match required format. E.g. [ONB-314] Add password reset flow"
           exit 1
         fi
