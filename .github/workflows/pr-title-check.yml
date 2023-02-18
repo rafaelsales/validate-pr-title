@@ -11,7 +11,10 @@ jobs:
   pr-title-check:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "valid_title=[[ "${{ github.event.pull_request.title }}" =~ $PR_TITLE_PATTERN ]]" >> $GITHUB_OUTPUT
+      
       - uses: actions/github-script@v6
+        if: ${{ steps.stepid.outputs.valid_title > 0 }}"
         with:
           script: |
             github.rest.issues.createComment({
