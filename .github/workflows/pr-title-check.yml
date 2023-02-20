@@ -13,7 +13,7 @@ jobs:
     steps:
       - id: validate_title
         run: |
-          valid_title=$([[ "${{ github.event.pull_request.title }}" =~ "${{ env.PR_TITLE_PATTERN }}" ]])
+          valid_title=$([[ "${{ github.event.pull_request.title }}" =~ ${{ env.PR_TITLE_PATTERN }} ]])
           echo $valid_title          
           echo "valid_title=$valid_title" >> $GITHUB_OUTPUT
           exit $valid_title
