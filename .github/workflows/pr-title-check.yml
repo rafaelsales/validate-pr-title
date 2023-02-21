@@ -2,18 +2,36 @@ name: PR title check
 
 on:
   pull_request:
-    types: [opened, edited, reopened]
+    types: [opened, edited, reopened, labeled, unlabeled]
 
 env:
-  PR_TITLE_PATTERN: "^\\[[A-Z]+-\\d+\\] \\S+\\s+\\S+"
+  PR_TITLE_PATTERN: "^\\[[A-Z]+-[0-9]+\\] [^ ]+"
+  SKIP_CHECK_LABEL: no-jira-issue
+  ERROR_MESSAGE: |
+    ⚠️ Pull request title does not match the required format. Example: `[ONB-314] Add password reset flow`.
+    
+    If this PR has no associated Jira Issue, you can disable the check by adding the label `no-jira-issue`.
 
 jobs:
   pr-title-check:
     runs-on: ubuntu-latest
     steps:
-    - name: Check PR title format
-      run: |
-        if ! [[ "${{ github.event.pull_request.title }}" =~ $PR_TITLE_PATTERN ]]; then
-          echo "ERROR: Pull request title does not match required format."
-          exit 1
-        fi
+      - id: validate_title
+        if: "!contains(github.event.pull_request.labels.*.name, env.SKIP_CHECK_LABEL)"
+        run: |
+          if ! [[ "${{ github.event.pull_request.title }}" =~ $PR_TITLE_PATTERN ]]; then
+            echo "ERROR: $ERROR_MESSAGE"
+            echo "is_valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+      
+      - uses: actions/github-script@v6
+        if: ${{ failure() && steps.validate_title.outputs.is_valid == 'false' }}
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: process.env.ERROR_MESSAGE
+            })
