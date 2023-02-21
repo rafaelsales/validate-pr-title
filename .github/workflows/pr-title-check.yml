@@ -7,9 +7,9 @@ on:
 env:
   PR_TITLE_PATTERN: "^\\[[A-Z]+-[0-9]+\\] [^ ]+"
   ERROR_MESSAGE: |
-    Pull request title does not match required format. Example: `[ONB-314] Add password reset flow`.
+    ⚠️ Pull request title does not match the required format. Example: `[ONB-314] Add password reset flow`.
     
-    If there is no associated ticket number, you can disable the check by adding the label `no-jira-ticket`.
+    If this PR has no associated Jira Issue, you can disable the check by adding the label `no-jira-issue`.
 
 jobs:
   pr-title-check:
