@@ -2,7 +2,7 @@ name: PR title check
 
 on:
   pull_request:
-    types: [opened, edited, reopened]
+    types: [opened, edited, reopened, labeled, unlabeled]
 
 env:
   PR_TITLE_PATTERN: "^\\[[A-Z]+-[0-9]+\\] [^ ]+"
