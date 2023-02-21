@@ -6,6 +6,7 @@ on:
 
 env:
   PR_TITLE_PATTERN: "^\\[[A-Z]+-[0-9]+\\] [^ ]+"
+  SKIP_CHECK_LABEL: no-jira-issue
   ERROR_MESSAGE: |
     ⚠️ Pull request title does not match the required format. Example: `[ONB-314] Add password reset flow`.
     
@@ -16,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: validate_title
-        if: "!contains(github.event.pull_request.labels.*.name, 'no-jira-issue')"
+        if: "!contains(github.event.pull_request.labels.*.name, env.SKIP_CHECK_LABEL)"
         run: |
           if ! [[ "${{ github.event.pull_request.title }}" =~ $PR_TITLE_PATTERN ]]; then
             echo "ERROR: $ERROR_MESSAGE"
